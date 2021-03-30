@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { first } from "rxjs/operators";
+import { Starship } from "src/app/core/models/starship";
 import { ShipsService } from "src/app/core/services/ships.service";
 
 @Component({
@@ -12,9 +14,11 @@ export class ShipsComponent implements OnInit {
   constructor(private shipsService: ShipsService) {}
 
   ngOnInit(): void {
-    this.shipsService.getShips().subscribe((ships) => {
-      this.dataList = ships;
-      console.log("SHIPS -->", this.dataList.results);
-    });
+    this.shipsService
+      .getShips()
+      .pipe(first())
+      .subscribe((response: any) => {
+        this.dataList = response;
+      });
   }
 }
