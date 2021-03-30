@@ -1,32 +1,25 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
-import { PrincipalModule } from './components/principal/principal.module';
+import { NgModule } from "@angular/core";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { BrowserModule } from "@angular/platform-browser";
+import { AppRoutingModule } from "./app-routing.module";
+import { PrincipalModule } from "./pages/principal/principal.module";
+import { SharedModule } from "./shared/shared.module";
+import { HttpRequestInterceptor } from "./core/interceptor/http-request.interceptor";
 
 // Components
-import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { PrincipalComponent } from './components/principal/principal.component';
-
+import { AppComponent } from "./app.component";
+import { PrincipalComponent } from "./pages/principal/principal.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    PrincipalComponent
+  declarations: [AppComponent, PrincipalComponent],
+  imports: [BrowserModule, AppRoutingModule, PrincipalModule, SharedModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true,
+    },
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PrincipalModule
-
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
