@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  tokenType: "Bearer",
+  storageType: localStorage,
+  apiLoginBaseURL: "https://reqres.in/api",
+  starWarsAPIBaseURL: "https://swapi.dev/api",
 };
 
 /*
