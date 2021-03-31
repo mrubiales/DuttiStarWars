@@ -11,7 +11,8 @@ export class ShipsService {
 
   constructor(private apiHttpClientService: ApiHttpClientService) {}
 
-  public getShips(): Observable<any> {
-    return this.apiHttpClientService.get(this.starShipsURL, {});
+  public getShips(pageNumber?: number): Observable<any> {
+    const params: any = pageNumber ? { page: pageNumber } : {};
+    return this.apiHttpClientService.get(this.starShipsURL, params);
   }
 }
