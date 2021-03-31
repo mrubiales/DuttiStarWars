@@ -1,49 +1,76 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from "@angular/core";
+import { first } from "rxjs/operators";
+import { Starship } from "src/app/core/models/starship";
+import { ShipsService } from "src/app/core/services/ships.service";
 declare var $: any;
 
-
 @Component({
-  selector: 'ships-details',
-  templateUrl: './ships-details.component.html',
-  styleUrls: ['./ships-details.component.scss']
+  selector: "ships-details",
+  templateUrl: "./ships-details.component.html",
+  styleUrls: ["./ships-details.component.scss"],
 })
-export class ShipsDetailsComponent implements OnInit {
-
+export class ShipsDetailsComponent implements OnInit, OnChanges {
   @Input() dataList: any;
-  config: any;
-  shipId: string = '';
-  url: string = '';
+  public starShipList: Starship[];
+  public config: any;
+  public shipId: string = "";
+  public url: string = "";
   // Modal
-  titleDetails: string = '';
-  modelDetails: string = '';
-  starship_class: string = '';
+  public titleDetails: string = "";
+  public modelDetails: string = "";
+  public starship_class: string = "";
 
-  constructor() { 
+  constructor(private shipsService: ShipsService) {}
+
+  public ngOnInit(): void {
+    this.config = {
+      itemsPerPage: 10,
+      currentPage: 1,
+      totalItems: 0,
+    };
   }
-  
-  ngOnInit(): void {
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.dataList.isFirstChange()) {
+      this.starShipList = this.dataList.results;
       this.config = {
-        itemsPerPage: 5,
+        itemsPerPage: this.starShipList.length,
         currentPage: 1,
-        totalItems: this.dataList.length
+        totalItems: this.dataList.count,
       };
+    }
   }
 
-  getStarshipId(url) {
-    this.shipId = url.slice(0, -1)
-    const urlImage = `${this.shipId}.jpg`
+  public updateStarShipList() {
+    this.shipsService
+      .getShips(this.config.currentPage)
+      .pipe(first())
+      .subscribe((response: any) => {
+        this.starShipList = response.results;
+      });
+  }
+
+  public getStarshipId(url) {
+    this.shipId = url.slice(0, -1);
+    const urlImage = `${this.shipId}.jpg`;
     return urlImage !== "";
   }
 
-  pageChanged(event){
+  public pageChanged(event) {
     this.config.currentPage = event;
+    this.updateStarShipList();
   }
 
-  openDetails(details) {
-    $("#exampleModal").modal('show');
+  public openDetails(details) {
+    $("#exampleModal").modal("show");
     this.titleDetails = details.name;
     this.modelDetails = details.model;
-    this.starship_class = details.starship_class
+    this.starship_class = details.starship_class;
   }
-
 }
