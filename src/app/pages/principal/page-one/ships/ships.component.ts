@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { first } from "rxjs/operators";
-import { Starship } from "src/app/core/models/starship";
-import { ShipsService } from "src/app/core/services/ships.service";
+import { Store } from "@ngrx/store";
+import * as StarshipsActions from "../../../../core/actions/starships.actions";
 
 @Component({
   selector: "app-ships",
@@ -11,14 +10,9 @@ import { ShipsService } from "src/app/core/services/ships.service";
 export class ShipsComponent implements OnInit {
   public dataList: any = [];
 
-  constructor(private shipsService: ShipsService) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.shipsService
-      .getShips()
-      .pipe(first())
-      .subscribe((response: any) => {
-        this.dataList = response;
-      });
+    this.store.dispatch(StarshipsActions.createStarshipsListAction());
   }
 }

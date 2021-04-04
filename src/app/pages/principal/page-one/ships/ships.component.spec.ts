@@ -1,6 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { ShipsService } from "src/app/core/services/ships.service";
+import { StoreModule } from "@ngrx/store";
 
 import { ShipsComponent } from "./ships.component";
 
@@ -13,6 +14,7 @@ describe("ShipsComponent", () => {
     getShips: function () {
       return new BehaviorSubject([]);
     },
+    ShipsComponent,
   };
 
   @Component({
@@ -26,6 +28,7 @@ describe("ShipsComponent", () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
+        imports: [StoreModule.forRoot([])],
         declarations: [ShipsComponent, MockShipDetails],
         providers: [{ provide: ShipsService, useValue: serviceMock }],
       }).compileComponents();
