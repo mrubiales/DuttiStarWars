@@ -9,10 +9,27 @@ import { HttpRequestInterceptor } from "./core/interceptor/http-request.intercep
 // Components
 import { AppComponent } from "./app.component";
 import { PrincipalComponent } from "./pages/principal/principal.component";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { environment } from "../environments/environment";
+import { EffectsModule } from "@ngrx/effects";
+import { StoreModule } from "@ngrx/store";
+import { StarshipsReducer } from "./core/reducers/starships.reducer";
+import { StarshipsEffects } from "./core/effects/starships.effects";
 
 @NgModule({
   declarations: [AppComponent, PrincipalComponent],
-  imports: [BrowserModule, AppRoutingModule, PrincipalModule, SharedModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    PrincipalModule,
+    SharedModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
+    EffectsModule.forRoot([StarshipsEffects]),
+    StoreModule.forRoot({ starships: StarshipsReducer }),
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
