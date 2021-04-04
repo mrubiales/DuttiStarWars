@@ -11,8 +11,9 @@ import { UserService } from "src/app/core/services/user.service";
   styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup;
-  dataLoading: boolean = false;
+  public registerForm: FormGroup;
+  public dataLoading: boolean = false;
+  public resgisterSuccess: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -55,7 +56,10 @@ export class RegisterComponent implements OnInit {
             return throwError(error);
           })
         )
-        .subscribe(() => this.router.navigate(["/login"]));
+        .subscribe(() => {
+          this.resgisterSuccess = true;
+          this.router.navigate(["/login"]);
+        });
     }
   }
 }
