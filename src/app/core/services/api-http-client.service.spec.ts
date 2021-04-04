@@ -1,16 +1,25 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from "@angular/core/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-import { ApiHttpClientService } from './api-http-client.service';
+import { ApiHttpClientService } from "./api-http-client.service";
 
-describe('ApiHttpClientService', () => {
-	let service: ApiHttpClientService;
+describe("ApiHttpClientService", () => {
+  let service: ApiHttpClientService;
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({});
-		service = TestBed.inject(ApiHttpClientService);
-	});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+      }).compileComponents();
+    })
+  );
 
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ApiHttpClientService);
+  });
+
+  it("should be created", () => {
+    expect(service).toBeTruthy();
+  });
 });

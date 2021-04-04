@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   public users: any = usersList;
   public authenticationError: boolean = false;
   public invalid: boolean = false;
+  public loginSuccess: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -66,6 +67,7 @@ export class LoginComponent implements OnInit {
         finalize(() => (this.dataLoading = false))
       )
       .subscribe(() => {
+        this.loginSuccess = true;
         this.router.navigate([""]);
       });
   }

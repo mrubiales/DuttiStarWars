@@ -1,16 +1,25 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 
-import { AuthService } from './auth.service';
+import { AuthService } from "./auth.service";
 
-describe('AuthService', () => {
-	let service: AuthService;
+describe("AuthService", () => {
+  let service: AuthService;
 
-	beforeEach(() => {
-		TestBed.configureTestingModule({});
-		service = TestBed.inject(AuthService);
-	});
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+      }).compileComponents();
+    })
+  );
 
-	it('should be created', () => {
-		expect(service).toBeTruthy();
-	});
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(AuthService);
+  });
+
+  it("should be created", () => {
+    expect(service).toBeTruthy();
+  });
 });
