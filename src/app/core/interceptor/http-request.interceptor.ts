@@ -26,7 +26,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log(request);
     const apiCredentials: string = this.apiHttpClientService.apiCredentials;
     if (request.headers.has(apiCredentials)) {
       request = this.deleteHeader(request, apiCredentials);
