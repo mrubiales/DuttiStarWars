@@ -7,6 +7,7 @@ import * as StarshipsActions from "../actions/starships.actions";
 import { Starship } from "../models/starship";
 import { ShipsService } from "../services/ships.service";
 import StarshipsState from "../states/starships.state";
+import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class StarshipsEffects {
@@ -18,12 +19,15 @@ export class StarshipsEffects {
       flatMap(() =>
         this.shipsService.getShips().pipe(
           map((response: any) => {
-            const _starShipList: Starship[] = response.results;
+            let currentStarShipList: Starship[] = response.results;
+            currentStarShipList = this.shipsService.fillStarShipsPicURL(
+              currentStarShipList
+            );
             const starshipsState: StarshipsState = {
               currentPage: 1,
-              itemsPerPage: _starShipList.length,
+              itemsPerPage: currentStarShipList.length,
               totalItems: response.count,
-              starShipList: _starShipList,
+              starShipList: currentStarShipList,
             };
             return StarshipsActions.successCreateStarshipsListAction({
               payload: starshipsState,
@@ -40,12 +44,15 @@ export class StarshipsEffects {
       flatMap((action: any) =>
         this.shipsService.getShips(action.pageNumber).pipe(
           map((response: any) => {
-            const _starShipList: Starship[] = response.results;
+            let currentStarShipList: Starship[] = response.results;
+            currentStarShipList = this.shipsService.fillStarShipsPicURL(
+              currentStarShipList
+            );
             const starshipsState: StarshipsState = {
               currentPage: action.pageNumber,
-              itemsPerPage: _starShipList.length,
+              itemsPerPage: currentStarShipList.length,
               totalItems: response.count,
-              starShipList: _starShipList,
+              starShipList: currentStarShipList,
             };
             return StarshipsActions.successUpdateStarshipsListAction({
               payload: starshipsState,
