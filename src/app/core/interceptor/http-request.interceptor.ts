@@ -42,7 +42,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       request.urlWithParams
     );
     if (cachedResponse) {
-      console.log("RESPONSE CACHED", this.cachedData);
+      console.log("RESPONSE CACHED");
       return of(cachedResponse.clone());
     }
 
@@ -51,7 +51,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         if (httpEvent instanceof HttpResponse) {
           this.cachedData.set(request.urlWithParams, httpEvent.clone());
         }
-        console.log("TAP CACHE", this.cachedData);
       }),
       share()
     );
