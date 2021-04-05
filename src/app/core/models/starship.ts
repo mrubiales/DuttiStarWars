@@ -17,4 +17,5 @@ export interface Starship {
   created: string;
   edited: string;
   url: string;
+  picURL?: string;
 }
